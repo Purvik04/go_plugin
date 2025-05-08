@@ -1,0 +1,36 @@
+[
+  {
+    "id": 1,
+    "ip": null,
+    "system_type" : "linux",
+    "port": 22,
+    "credentials": {
+      "username": "jenil",
+      "password": "Mind@123"
+    }
+  },
+
+  {
+    "id": 2,
+    "ip": "10.20.40.253",
+    "system_type" : "linux",
+    "port": 22,
+    "credentials": {
+      "username": "shaunak",
+      "password": "Mind@123"
+    }
+  },
+
+  {
+    "id": 3,
+    "ip": "10.20.345.253",
+    "system_type" : "linux",
+    "port": 22,
+    "credentials": {
+      "username": "harsh",
+      "password": "Mind@123"
+    }
+  }
+
+
+]
