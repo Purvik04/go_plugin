@@ -12,12 +12,12 @@ import (
 	"log"
 	"os"
 	"runtime/debug"
+	"ssh-plugin/discovery"
+	"ssh-plugin/metrics"
+	"ssh-plugin/models"
 	"sync"
 
 	"ssh-plugin/config"
-	"ssh-plugin/internal/discovery"
-	"ssh-plugin/internal/metrics"
-	"ssh-plugin/internal/models"
 )
 
 // main is the entry point for the plugin
