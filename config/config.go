@@ -1,30 +1,29 @@
 package config
 
 import (
+	"encoding/json"
 	"os"
 	"time"
-
-	"gopkg.in/yaml.v3"
 )
 
 // Config represents the application configuration
 type Config struct {
 	SSH struct {
-		Timeout time.Duration `yaml:"timeout"`
-	} `yaml:"ssh"`
+		Timeout int `json:"timeout"` // Timeout in seconds
+	} `json:"ssh"`
 	Metrics struct {
-		Commands map[string]string `yaml:"commands"`
-	} `yaml:"metrics"`
+		Commands map[string]string `json:"commands"`
+	} `json:"metrics"`
 	Encryption struct {
-		Key string `yaml:"key"` // Hex-encoded AES key
-	} `yaml:"encryption"`
+		Key string `json:"key"` // Hex-encoded AES key
+	} `json:"encryption"`
 }
 
-// LoadConfig loads configuration from config.yaml with safe defaults
+// LoadConfig loads configuration from config.json with safe defaults
 func LoadConfig() (*Config, error) {
 	// Set default configuration
 	defaultConfig := &Config{}
-	defaultConfig.SSH.Timeout = 5 * time.Second
+	defaultConfig.SSH.Timeout = 5 // 5 seconds default
 	defaultConfig.Metrics.Commands = map[string]string{
 		"hostname":  "hostname",
 		"uptime":    "uptime -p",
@@ -35,8 +34,8 @@ func LoadConfig() (*Config, error) {
 	}
 	defaultConfig.Encryption.Key = "" // No default key for security
 
-	// If config.yaml does not exist, return defaults
-	configFile, err := os.Open("/home/purvik/IdeaProjectsUltimate/nms-main/go/config.yaml")
+	// If config.json does not exist, return defaults
+	configFile, err := os.Open("/home/purvik/IdeaProjectsUltimate/nms-main/go/config.json")
 	if err != nil {
 		if os.IsNotExist(err) {
 			return defaultConfig, nil
@@ -45,23 +44,25 @@ func LoadConfig() (*Config, error) {
 	}
 	defer configFile.Close()
 
-	// Decode config.yaml into temp struct
+	// Decode config.json into temp struct
 	userConfig := &Config{}
-	decoder := yaml.NewDecoder(configFile)
+	decoder := json.NewDecoder(configFile)
 	if err := decoder.Decode(userConfig); err != nil {
 		return nil, err
 	}
 
 	// Merge userConfig over defaultConfig safely
-	if userConfig.SSH.Timeout != 0 {
+	if userConfig.SSH.Timeout > 0 {
 		defaultConfig.SSH.Timeout = userConfig.SSH.Timeout
 	}
 
-	for key, defaultCmd := range defaultConfig.Metrics.Commands {
-		if userCmd, exists := userConfig.Metrics.Commands[key]; exists && userCmd != "" {
-			defaultConfig.Metrics.Commands[key] = userCmd
-		} else {
-			defaultConfig.Metrics.Commands[key] = defaultCmd
+	if userConfig.Metrics.Commands != nil {
+		for key, defaultCmd := range defaultConfig.Metrics.Commands {
+			if userCmd, exists := userConfig.Metrics.Commands[key]; exists && userCmd != "" {
+				defaultConfig.Metrics.Commands[key] = userCmd
+			} else {
+				defaultConfig.Metrics.Commands[key] = defaultCmd
+			}
 		}
 	}
 
@@ -70,4 +71,9 @@ func LoadConfig() (*Config, error) {
 	}
 
 	return defaultConfig, nil
+}
+
+// GetSSHTimeout returns the SSH timeout as a time.Duration
+func (c *Config) GetSSHTimeout() time.Duration {
+	return time.Duration(c.SSH.Timeout) * time.Second
 }

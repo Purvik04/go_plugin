@@ -9,14 +9,8 @@ const (
 
 // Error messages
 const (
-	ErrConnectionFailed  = "failed to establish SSH connection"
-	ErrAuthFailed        = "authentication failed"
-	ErrExecutionFailed   = "command execution failed"
-	ErrTimeout           = "operation timed out"
-	ErrInvalidParameters = "invalid parameters"
-)
-
-// Command timeout in seconds
-const (
-	CommandTimeout = 10 // Default timeout for individual command execution
+	ErrConnectionFailed = "failed to establish SSH connection"
+	ErrAuthFailed       = "authentication failed"
+	ErrExecutionFailed  = "command execution failed"
+	ErrTimeout          = "operation timed out"
 )

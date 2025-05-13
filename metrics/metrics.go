@@ -5,7 +5,7 @@ import (
 	"runtime/debug"
 	"ssh-plugin/constants"
 	"ssh-plugin/models"
-	"ssh-plugin/models/utils"
+	"ssh-plugin/utils"
 	"strings"
 	"time"
 

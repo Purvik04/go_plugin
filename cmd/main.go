@@ -199,7 +199,7 @@ func processMetrics(devices []models.Device, cfg *config.Config) {
 
 			// Dispatch based on system type
 			collector := metrics.GetMetricsCollector(dev.SystemType)
-			result := collector.Collect(dev, cfg.SSH.Timeout)
+			result := collector.Collect(dev, cfg.GetSSHTimeout())
 			resultChan <- result
 		}(device)
 	}
@@ -259,7 +259,7 @@ func processDiscovery(devices []models.Device, cfg *config.Config) {
 
 			// Dispatch based on system type
 			performer := discovery.GetDiscoveryPerformer(dev.SystemType)
-			result := performer.Perform(dev, cfg.SSH.Timeout)
+			result := performer.Perform(dev, cfg.GetSSHTimeout())
 			resultChan <- result
 		}(device)
 	}

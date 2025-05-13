@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"runtime/debug"
 	"ssh-plugin/models"
-	"ssh-plugin/models/utils"
+	"ssh-plugin/utils"
 	"time"
 )
 
